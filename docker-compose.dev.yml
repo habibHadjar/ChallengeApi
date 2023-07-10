@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: api
+    build: 
+      context: ./
+      dockerfile: ./docker/Dockerfile.dev
+    command: /bin/bash -c "while sleep 1000; do :; done"
+    working_dir: /home/dev
+    networks:
+      - api-network
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./:/home/dev:cached
+    labels:
+      api_logging: "true"      
+    
+  dbms:
+    container_name: db
+    image: mariadb
+    restart: always
+    ports:
+      - "3309:3306"
+    environment: 
+      - MYSQL_ALLOW_EMPTY_PASSWORD=false
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    command: [
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci",
+    ]
+    volumes:
+      - ./db/dbms-data:/var/lib/mysql
+      - ./db/mariadb.cnf:/etc/mysql/mariadb.cnf
+    networks:
+      - api-network
+
+  proxy:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - ./nginx/api-dev.nginx.conf:/etc/nginx/conf.d/api.nginx.conf
+    networks:
+      - api-network
+
+networks:
+  api-network:
+    driver: bridge
+    name: api-network
