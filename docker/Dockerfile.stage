@@ -10,4 +10,4 @@ WORKDIR app
 COPY --from=api-builder /app/build ./build
 COPY package* ./
 RUN npm install --omit=dev
-CMD npm run api
+CMD npm run build
