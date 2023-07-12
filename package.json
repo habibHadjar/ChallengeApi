@@ -4,6 +4,8 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf build",
+    "build": "npm run clean && tsc && copyfiles public/**/* build/",
     "serve": "nodemon"
   },
   "repository": {
@@ -23,7 +25,9 @@
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.4.1",
+    "copyfiles": "^2.4.1",
     "nodemon": "^3.0.1",
+    "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }
