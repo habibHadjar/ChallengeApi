@@ -6,6 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf build",
     "build": "npm run clean && tsc && copyfiles public/**/* build/",
+    "start": "node build/server.js",
     "serve": "nodemon"
   },
   "repository": {
