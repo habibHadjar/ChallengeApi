@@ -32,6 +32,7 @@ services:
         max-size: "500m"
     
   dbms:
+    container_name: db
     image: mariadb
     restart: always
     ports:
