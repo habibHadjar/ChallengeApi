@@ -55,7 +55,6 @@ export default class AuthMiddleware {
       res.locals.student.email = email;
       next();
     } catch (e) {
-      console.log("here");
       HttpResponse.requestError(res, JSON.stringify(e));
     }
   };
@@ -66,7 +65,30 @@ export default class AuthMiddleware {
   };
 
   public static async admin(req: Request, res: Response, next: NextFunction) {
-    console.log(req);
-    next();
+    try {
+      const { email } = req.body;
+
+      const user = await CRUD.Read<IUserRO>({
+        table: 'Users',
+        idKey: 'email',
+        idValue: email,
+      });
+
+      if (!user) return HttpResponse.requestError(res, { data: "You are not a user!"});
+
+      const admin = await CRUD.Read<IAdminRO>({
+        table: 'Admins',
+        idKey: 'user_id',
+        idValue: user.id,
+      });
+
+      if (!admin) return HttpResponse.requestError(res, { data: "You are not an admin!"});
+
+      res.locals.admin = admin;
+      res.locals.admin.email = email;
+      next();
+    } catch (e) {
+      HttpResponse.requestError(res, JSON.stringify(e));
+    }
   };
 }

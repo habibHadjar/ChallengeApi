@@ -25,7 +25,7 @@ export default class StudentsController {
       HttpResponse.noContent(res);
     } catch (err) {
       console.log(err);
-      HttpResponse.requestError(res, JSON.stringify(err));
+      HttpResponse.requestError(res, {data: "something went wrong"});
     }
   };
 
