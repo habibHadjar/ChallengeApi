@@ -13,8 +13,8 @@ services:
       - PORT=5050
       - FRONT_URL=https://464industries.com
       - DB_HOST=db
-      - DB_USER=api-user
-      - DB_PASSWORD=api-user-password
+      - DB_USER=user-api
+      - DB_PASSWORD=user-api-password
       - DB_DATABASE=challenges
       - MJ_APIKEY=3d951e6aa8529c1eab3b76426873edf1
       - MJ_APISECRET=4e45906c83730b15eca96f117d708fd1
