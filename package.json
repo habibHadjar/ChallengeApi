@@ -27,6 +27,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.4.1",
     "copyfiles": "^2.4.1",
+    "@types/ssh2": "^1.11.12",
     "nodemon": "^3.0.1",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",

@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS Admins (
 -- Create Students table
 CREATE TABLE IF NOT EXISTS Students (
   user_id INT NOT NULL,
-  firstname VARCHAR(255) NOT NULL,
-  lastname VARCHAR(255) NOT NULL,
+  firstname VARCHAR(255),
+  lastname VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES Users(id),
   CONSTRAINT PK_Students PRIMARY KEY (user_id),
   CONSTRAINT FK_Students_Users FOREIGN KEY (user_id) REFERENCES Users(id),
@@ -179,6 +179,11 @@ CREATE TABLE IF NOT EXISTS Student_Challenges (
   challenge_id INT NOT NULL,
   shell_ip VARCHAR(255),
   shell_username VARCHAR(255),
+  db_ip VARCHAR(255),
+  db_port INT,
+  db_user VARCHAR(255),
+  db_password VARCHAR(255),
+  db_table VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES Students(user_id),
   FOREIGN KEY (challenge_id) REFERENCES Challenges(id),
   CONSTRAINT PK_Student_Challenges PRIMARY KEY (user_id, challenge_id)

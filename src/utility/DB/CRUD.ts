@@ -1,7 +1,8 @@
-import {IIndexQuery, IIndexResponse, IReadWhere, ITableCount} from "../../types/CRUD.types";
+import {ErrorCode, IIndexQuery, IIndexResponse, IReadWhere, ITableCount} from "../../types/CRUD.types";
 import {DbTable} from "../../models/DBTables";
 import {DB} from "./DB";
-import {RowDataPacket} from "mysql2";
+import {OkPacket, RowDataPacket} from "mysql2";
+import {ApiError} from "./ApiError";
 
 export class CRUD {
 
@@ -49,6 +50,65 @@ export class CRUD {
     }
 
     return res;
+  }
+
+  public static async Read<T>(options: {
+    table: DbTable,
+    idKey: string,
+    idValue: number|string,
+    columns?: string[]
+  }): Promise<T|false> {
+    const db = DB.Connection;
+    const data = await db.query<T[] & RowDataPacket[]>(`select ${options.columns ? options.columns.join(',') : '*'} from ${options.table} where ${options.idKey} = ?`, [options.idValue]);
+
+
+    if (data[0].length > 0) {
+      return data[0][0];
+    } else {
+      return false;
+    }
+  }
+
+  public static async Create<T>(options: {
+    body: T,
+    table: DbTable
+  }): Promise<{ id: number }> {
+    const db = DB.Connection;
+    const data = await db.query<OkPacket>(`insert into ${options.table} set ?`, options.body);
+
+    return {
+      id: data[0].insertId
+    }
+  }
+
+  public static async Update<T>(options: {
+    body: T,
+    table: DbTable,
+    idKey: string,
+    idValue: number|string
+  }): Promise<{ id: number|string; rows: number; }> {
+    const db = DB.Connection;
+
+    const data = await db.query<OkPacket>(`update ${options.table} set ? where ${options.idKey} = ?`, [options.body, options.idValue]);
+
+    return {
+      id: options.idValue,
+      rows: data[0].affectedRows
+    }
+  }
+
+  public static async Delete(options: {
+    table: DbTable,
+    idKey: string,
+    idValue: number|string
+  }): Promise<{ id: number|string; rows: number; }> {
+    const db = DB.Connection;
+    const data = await db.query<OkPacket>(`delete from ${options.table} where ${options.idKey} = ?`, [options.idValue]);
+
+    return {
+      id: options.idValue,
+      rows: data[0].affectedRows
+    }
   }
 
 }
