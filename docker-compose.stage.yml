@@ -17,7 +17,7 @@ services:
       - DB_PASSWORD=user-api-password
       - DB_DATABASE=challenges
       - MJ_APIKEY=3d951e6aa8529c1eab3b76426873edf1
-      - MJ_APISECRET=4e45906c83730b15eca96f117d708fd1
+      - MJ_APISECRET=ab1a9688a6b22874dae3dbf81cb47446
       - MJ_EMAIL_FROM=hadjar.habib.dev@gmail.com
       - MJ_EMAIL_NAME=habib
     networks:
